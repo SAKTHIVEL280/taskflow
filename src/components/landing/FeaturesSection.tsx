@@ -1,9 +1,10 @@
 import LetterPullUp from '@/components/reactbits/LetterPullUp';
 import TextScramble from '@/components/reactbits/TextScramble';
 import CountUp from '@/components/reactbits/CountUp';
-import ClipReveal from '@/components/reactbits/ClipReveal';
 import InfiniteMarquee from '@/components/reactbits/InfiniteMarquee';
 import { motion } from 'framer-motion';
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const FeaturesSection = () => {
   const features = [
@@ -61,12 +62,16 @@ const FeaturesSection = () => {
             { to: 3, label: 'View modes' },
             { to: 100, suffix: '%', label: 'Customizable' },
           ].map((stat, i) => (
-            <ClipReveal key={stat.label} direction="up" delay={i * 0.1}>
-              <div>
-                <CountUp to={stat.to} suffix={stat.suffix} className="text-5xl font-bold tracking-tight block" />
-                <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mt-2">{stat.label}</p>
-              </div>
-            </ClipReveal>
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.7, ease }}
+            >
+              <CountUp to={stat.to} suffix={stat.suffix} className="text-5xl font-bold tracking-tight block" />
+              <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mt-2">{stat.label}</p>
+            </motion.div>
           ))}
         </div>
 
@@ -88,7 +93,7 @@ const FeaturesSection = () => {
                 initial={{ width: 0 }}
                 whileInView={{ width: 48 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, ease }}
               />
               <TextScramble
                 text="CAPABILITIES"
@@ -101,15 +106,19 @@ const FeaturesSection = () => {
               className="text-4xl md:text-5xl font-bold tracking-[-0.03em] leading-[1.05]"
             />
           </div>
-          <ClipReveal direction="right" delay={0.3}>
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed md:text-right">
-              Not a template. Not a preset.
-              A system that adapts to the way you think and work.
-            </p>
-          </ClipReveal>
+          <motion.p
+            className="text-sm text-muted-foreground max-w-xs leading-relaxed md:text-right"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.7, ease }}
+          >
+            Not a template. Not a preset.
+            A system that adapts to the way you think and work.
+          </motion.p>
         </div>
 
-        {/* Feature list — hover-driven interactions */}
+        {/* Feature list */}
         <div className="border-t border-border">
           {features.map((feature, i) => (
             <motion.div
@@ -118,7 +127,7 @@ const FeaturesSection = () => {
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: i * 0.06, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: i * 0.06, duration: 0.7, ease }}
               whileHover={{ x: 8 }}
             >
               <span className="text-xs font-mono text-primary/50 group-hover:text-primary transition-colors duration-500">

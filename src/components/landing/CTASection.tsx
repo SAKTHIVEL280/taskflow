@@ -4,14 +4,20 @@ import { ArrowRight } from 'lucide-react';
 import Magnetic from '@/components/reactbits/Magnetic';
 import GradientText from '@/components/reactbits/GradientText';
 import LetterPullUp from '@/components/reactbits/LetterPullUp';
-import ClipReveal from '@/components/reactbits/ClipReveal';
 import { motion } from 'framer-motion';
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const CTASection = () => {
   return (
     <section className="py-32 px-6">
       <div className="max-w-7xl mx-auto">
-        <ClipReveal direction="up" duration={1}>
+        <motion.div
+          initial={{ opacity: 0, y: 50, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease }}
+        >
           <div className="relative rounded-3xl overflow-hidden">
             {/* Animated gradient background */}
             <motion.div
@@ -46,17 +52,21 @@ const CTASection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 0.5, duration: 0.8, ease }}
               >
                 Your rules.
               </motion.span>
 
-              <ClipReveal direction="up" delay={0.7}>
-                <p className="text-muted-foreground text-base mb-12 max-w-md leading-relaxed">
-                  Free to start. No credit card. No friction.
-                  Just you and your perfect workflow.
-                </p>
-              </ClipReveal>
+              <motion.p
+                className="text-muted-foreground text-base mb-12 max-w-md leading-relaxed"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.7, ease }}
+              >
+                Free to start. No credit card. No friction.
+                Just you and your perfect workflow.
+              </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -75,7 +85,7 @@ const CTASection = () => {
               </motion.div>
             </div>
           </div>
-        </ClipReveal>
+        </motion.div>
       </div>
     </section>
   );

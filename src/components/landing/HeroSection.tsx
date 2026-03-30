@@ -6,7 +6,6 @@ import LetterPullUp from '@/components/reactbits/LetterPullUp';
 import GradientText from '@/components/reactbits/GradientText';
 import TextScramble from '@/components/reactbits/TextScramble';
 import Magnetic from '@/components/reactbits/Magnetic';
-import ClipReveal from '@/components/reactbits/ClipReveal';
 import { motion } from 'framer-motion';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -72,38 +71,39 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Sub content with clip reveals */}
-        <div className="mt-16 grid md:grid-cols-[1fr_auto] gap-16 items-end">
-          <ClipReveal direction="left" delay={0.8}>
-            <p className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed">
-              Every color, every font, every status column, every field.
-              TaskFlow doesn't ask you to adapt. It adapts to you.
-            </p>
-          </ClipReveal>
+        {/* Sub content */}
+        <motion.div
+          className="mt-16 grid md:grid-cols-[1fr_auto] gap-16 items-end"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.8, ease }}
+        >
+          <p className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed">
+            Every color, every font, every status column, every field.
+            TaskFlow doesn't ask you to adapt. It adapts to you.
+          </p>
 
-          <ClipReveal direction="right" delay={1}>
-            <div className="flex items-center gap-3">
-              <Magnetic strength={0.2}>
-                <Button size="lg" asChild className="h-14 px-10 text-sm tracking-wide rounded-full">
-                  <Link to="/signup">
-                    Start building free
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </Magnetic>
-              <Magnetic strength={0.15}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="h-14 px-8 text-sm tracking-wide rounded-full border-border/50"
-                >
-                  <a href="#features">Explore</a>
-                </Button>
-              </Magnetic>
-            </div>
-          </ClipReveal>
-        </div>
+          <div className="flex items-center gap-3">
+            <Magnetic strength={0.2}>
+              <Button size="lg" asChild className="h-14 px-10 text-sm tracking-wide rounded-full">
+                <Link to="/signup">
+                  Start building free
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </Magnetic>
+            <Magnetic strength={0.15}>
+              <Button
+                variant="outline"
+                size="lg"
+                asChild
+                className="h-14 px-8 text-sm tracking-wide rounded-full border-border/50"
+              >
+                <a href="#features">Explore</a>
+              </Button>
+            </Magnetic>
+          </div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}

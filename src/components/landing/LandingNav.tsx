@@ -2,15 +2,14 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Magnetic from '@/components/reactbits/Magnetic';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const LandingNav = () => {
   const { scrollY } = useScroll();
   const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.85]);
-  const borderOpacity = useTransform(scrollY, [0, 100], [0.3, 0.6]);
-  const blur = useTransform(scrollY, [0, 100], [0, 12]);
+  const borderVal = useTransform(scrollY, [0, 100], [0.3, 0.6]);
 
   return (
     <motion.nav
@@ -20,23 +19,15 @@ const LandingNav = () => {
       transition={{ duration: 0.8, ease }}
     >
       <motion.div
-        className="absolute inset-0"
-        style={{
-          backgroundColor: `hsl(var(--background))`,
-          opacity: bgOpacity,
-          backdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
-        }}
+        className="absolute inset-0 backdrop-blur-md"
+        style={{ opacity: bgOpacity, backgroundColor: 'hsl(var(--background))' }}
       />
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 relative z-10"
-        style={{ borderBottom: '1px solid' }}
-      >
-        <motion.div style={{ borderColor: useTransform(borderOpacity, (v) => `hsl(var(--border) / ${v})`) }}>
-          <Magnetic strength={0.15}>
-            <Link to="/" className="text-base font-semibold tracking-tight">
-              Task<span className="text-primary">Flow</span>
-            </Link>
-          </Magnetic>
-        </motion.div>
+      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 border-b border-border/30 relative z-10">
+        <Magnetic strength={0.15}>
+          <Link to="/" className="text-base font-semibold tracking-tight">
+            Task<span className="text-primary">Flow</span>
+          </Link>
+        </Magnetic>
 
         <div className="hidden md:flex items-center gap-8">
           {['Features', 'How it works'].map((item) => (

@@ -1,12 +1,18 @@
 import { motion } from 'framer-motion';
 import Tilt3D from '@/components/reactbits/Tilt3D';
-import ClipReveal from '@/components/reactbits/ClipReveal';
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const ShowcaseSection = () => {
   return (
     <section className="py-32 px-6 relative">
       <div className="max-w-7xl mx-auto">
-        <ClipReveal direction="up" duration={1.2}>
+        <motion.div
+          initial={{ opacity: 0, y: 80, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 1.2, ease }}
+        >
           <Tilt3D intensity={5} className="group">
             <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-2xl shadow-primary/[0.04]">
               {/* Window chrome */}
@@ -35,7 +41,7 @@ const ShowcaseSection = () => {
                 </div>
               </div>
 
-              {/* Board content — staggered card entrance */}
+              {/* Board content */}
               <div className="p-5 md:p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                   {[
@@ -59,28 +65,28 @@ const ShowcaseSection = () => {
                         <motion.div
                           key={ti}
                           className="rounded-lg bg-background border border-border p-3 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-300"
-                          initial={{ opacity: 0, y: 20, rotateX: -10 }}
-                          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{
                             delay: 0.3 + ci * 0.12 + ti * 0.06,
                             duration: 0.6,
-                            ease: [0.22, 1, 0.36, 1],
+                            ease,
                           }}
                         >
                           <div
                             className="h-2 rounded bg-muted-foreground/12 mb-2"
-                            style={{ width: `${50 + Math.random() * 40}%` }}
+                            style={{ width: `${50 + ((ti * 17 + ci * 23) % 40)}%` }}
                           />
                           <div
                             className="h-1.5 rounded bg-muted-foreground/6"
-                            style={{ width: `${30 + Math.random() * 50}%` }}
+                            style={{ width: `${30 + ((ti * 31 + ci * 13) % 50)}%` }}
                           />
                           <div className="flex items-center justify-between mt-3">
                             <div
                               className="h-[4px] w-6 rounded-full"
                               style={{
-                                background: `hsl(${[220, 340, 30, 160, 270][(ti + col.hue) % 5]} 55% 55% / 0.4)`,
+                                background: `hsl(${[220, 340, 30, 160, 270][(ti + ci) % 5]} 55% 55% / 0.4)`,
                               }}
                             />
                             <div className="w-4 h-4 rounded-full bg-muted border border-border" />
@@ -98,7 +104,7 @@ const ShowcaseSection = () => {
                 initial={{ opacity: 0, x: 30, scale: 0.9 }}
                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 1.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 1.2, duration: 0.7, ease }}
               >
                 <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
                   Your palette
@@ -122,7 +128,7 @@ const ShowcaseSection = () => {
               </motion.div>
             </div>
           </Tilt3D>
-        </ClipReveal>
+        </motion.div>
       </div>
     </section>
   );
