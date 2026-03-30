@@ -2,11 +2,16 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Magnetic from '@/components/reactbits/Magnetic';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const LandingNav = () => {
+  const { scrollY } = useScroll();
+  const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.85]);
+  const borderOpacity = useTransform(scrollY, [0, 100], [0.3, 0.6]);
+  const blur = useTransform(scrollY, [0, 100], [0, 12]);
+
   return (
     <motion.nav
       className="fixed top-0 left-0 right-0 z-40 px-6"
@@ -14,20 +19,36 @@ const LandingNav = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease }}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 border-b border-border/30">
-        <Magnetic strength={0.15}>
-          <Link to="/" className="text-base font-semibold tracking-tight">
-            Task<span className="text-primary">Flow</span>
-          </Link>
-        </Magnetic>
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          backgroundColor: `hsl(var(--background))`,
+          opacity: bgOpacity,
+          backdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
+        }}
+      />
+      <div className="max-w-7xl mx-auto flex items-center justify-between h-16 relative z-10"
+        style={{ borderBottom: '1px solid' }}
+      >
+        <motion.div style={{ borderColor: useTransform(borderOpacity, (v) => `hsl(var(--border) / ${v})`) }}>
+          <Magnetic strength={0.15}>
+            <Link to="/" className="text-base font-semibold tracking-tight">
+              Task<span className="text-primary">Flow</span>
+            </Link>
+          </Magnetic>
+        </motion.div>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-300">
-            Features
-          </a>
-          <a href="#how" className="text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-300">
-            How it works
-          </a>
+          {['Features', 'How it works'].map((item) => (
+            <a
+              key={item}
+              href={item === 'Features' ? '#features' : '#how'}
+              className="text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-300 relative group"
+            >
+              {item}
+              <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
+            </a>
+          ))}
         </div>
 
         <div className="flex items-center gap-2">
