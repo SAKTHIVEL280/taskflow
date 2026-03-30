@@ -1,7 +1,8 @@
 import LetterPullUp from '@/components/reactbits/LetterPullUp';
 import TextScramble from '@/components/reactbits/TextScramble';
-import ClipReveal from '@/components/reactbits/ClipReveal';
 import { motion } from 'framer-motion';
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const ProcessSection = () => {
   const steps = [
@@ -19,7 +20,7 @@ const ProcessSection = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.4 + i * 0.08, ease }}
             >
               {s}
             </motion.div>
@@ -81,7 +82,7 @@ const ProcessSection = () => {
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.4 + i * 0.1, ease }}
             >
               {v}
             </motion.div>
@@ -102,7 +103,7 @@ const ProcessSection = () => {
             initial={{ width: 0 }}
             whileInView={{ width: 48 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease }}
           />
           <TextScramble
             text="HOW IT WORKS"
@@ -118,7 +119,13 @@ const ProcessSection = () => {
 
         <div className="grid md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden">
           {steps.map((step, i) => (
-            <ClipReveal key={step.num} direction="up" delay={i * 0.15}>
+            <motion.div
+              key={step.num}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.15, duration: 0.8, ease }}
+            >
               <div className="bg-background p-8 md:p-10 flex flex-col h-full group hover:bg-muted/30 transition-colors duration-500">
                 <motion.span
                   className="text-xs font-mono text-primary/50 mb-6 block"
@@ -132,7 +139,7 @@ const ProcessSection = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed flex-1">{step.desc}</p>
                 {step.visual}
               </div>
-            </ClipReveal>
+            </motion.div>
           ))}
         </div>
       </div>
